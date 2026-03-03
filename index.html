@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cute Cat Doodle Messages</title>
+<style>
+  body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #ffeef7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+  .chat-container {
+    width: 400px;
+    background-color: #fff0f7;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    padding: 20px;
+    overflow: hidden;
+  }
+  .photo {
+    text-align: center;
+  }
+  .photo img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 4px solid #ffb6c1;
+    margin-bottom: 10px;
+  }
+  .message {
+    background-color: #ffcce0;
+    padding: 10px 15px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    color: #7b1f2d;
+  }
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .buttons button {
+    background-color: #ff99bb;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    transition: 0.2s;
+  }
+  .buttons button:hover {
+    background-color: #ff6699;
+  }
+</style>
+</head>
+<body>
+
+<div class="chat-container" id="chatContainer">
+  <!-- Photo & message area -->
+  <div class="photo" id="photoArea">
+    <img src="https://i.imgur.com/4AiXzf8.png" alt="cute cat doodle" id="photo">
+  </div>
+  <div class="message" id="messageArea">hi bebiiii</div>
+
+  <!-- Buttons area -->
+  <div class="buttons" id="buttonsArea">
+    <button onclick="nextMessage()">Next</button>
+  </div>
+</div>
+
+<script>
+const messages = [
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: 'hi bebiiii' },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: "hope u're doing good diyan" },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: 'virtual hug muna!' },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: 'i miss you' },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: "can't wait makauwi!" },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: 'hope u miss me too' },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: 'iloveyouuuusomuch!' },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: 'good night bebiii' },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: 'mwahhhh', button: 'Mwahhh!' },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: 'ihhhh' },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: 'hope you liked this' },
+  { img: 'https://i.imgur.com/4AiXzf8.png', text: 'iloveyouuusomuch mwahhh!', buttons: ['iloveyouuutoosomuch','iloveyouuu'] }
+];
+
+const loveResponses = {
+  'iloveyouuutoosomuch': { img: 'https://i.imgur.com/4AiXzf8.png', text: 'hihi, iloveyoumore' },
+  'iloveyouuu': { img: 'https://i.imgur.com/4AiXzf8.png', text: 'sob sob 😢', backButton: true }
+};
+
+let currentIndex = 0;
+
+function nextMessage(option) {
+  const chatContainer = document.getElementById('chatContainer');
+  const photo = document.getElementById('photo');
+  const message = document.getElementById('messageArea');
+  const buttonsArea = document.getElementById('buttonsArea');
+
+  if(option) {
+    const response = loveResponses[option];
+    photo.src = response.img;
+    message.textContent = response.text;
+    buttonsArea.innerHTML = '';
+    if(response.backButton) {
+      const backBtn = document.createElement('button');
+      backBtn.textContent = 'Back';
+      backBtn.onclick = () => {
+        currentIndex = messages.length - 1;
+        showMessage();
+      };
+      buttonsArea.appendChild(backBtn);
+    }
+    return;
+  }
+
+  currentIndex++;
+  if(currentIndex >= messages.length) return;
+
+  showMessage();
+}
+
+function showMessage() {
+  const photo = document.getElementById('photo');
+  const message = document.getElementById('messageArea');
+  const buttonsArea = document.getElementById('buttonsArea');
+
+  const current = messages[currentIndex];
+  photo.src = current.img;
+  message.textContent = current.text;
+
+  buttonsArea.innerHTML = '';
+
+  if(current.button) {
+    const btn = document.createElement('button');
+    btn.textContent = current.button;
+    btn.onclick = () => nextMessage('iloveyouuutoosomuch'); // default button mapping
+    buttonsArea.appendChild(btn);
+  } else if(current.buttons) {
+    current.buttons.forEach(btnText => {
+      const btn = document.createElement('button');
+      btn.textContent = btnText;
+      btn.onclick = () => nextMessage(btnText);
+      buttonsArea.appendChild(btn);
+    });
+  } else {
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = 'Next';
+    nextBtn.onclick = nextMessage;
+    buttonsArea.appendChild(nextBtn);
+  }
+}
+
+// Initialize first message
+showMessage();
+</script>
+
+</body>
+</html>
